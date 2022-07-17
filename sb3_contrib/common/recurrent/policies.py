@@ -233,8 +233,8 @@ class RecurrentActorCriticPolicy(ActorCriticPolicy):
             latent_vf, lstm_states_vf = self._process_sequence(features, lstm_states.vf, episode_starts, self.lstm_critic)
         elif self.shared_lstm:
             # Re-use LSTM features but do not backpropagate
-            latent_vf = latent_pi.detach()
-            lstm_states_vf = (lstm_states_pi[0].detach(), lstm_states_pi[1].detach())
+            latent_vf = latent_pi  # .detach()
+            lstm_states_vf = lstm_states_pi  # (lstm_states_pi[0].detach(), lstm_states_pi[1].detach())
         else:
             # Critic only has a feedforward network
             latent_vf = self.critic(features)
@@ -324,7 +324,7 @@ class RecurrentActorCriticPolicy(ActorCriticPolicy):
         if self.lstm_critic is not None:
             latent_vf, _ = self._process_sequence(features, lstm_states.vf, episode_starts, self.lstm_critic)
         elif self.shared_lstm:
-            latent_vf = latent_pi.detach()
+            latent_vf = latent_pi  # .detach()
         else:
             latent_vf = self.critic(features)
 
